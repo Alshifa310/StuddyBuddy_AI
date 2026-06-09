@@ -1,8 +1,12 @@
 # StuddyBuddy AI
 
+Check out the Front end demo : [https://studdybuddy-ai-demo.vercel.app/]
+
 StuddyBuddy AI is a streaming AI study assistant built with Next.js on the frontend and AWS on the backend. It lets users ask questions, get streamed responses, and keep their conversation history in the browser.
 
 This repository was adapted from the AWS workshop starter project for a streaming AI personal assistant. Credit goes to the original workshop authors for the base architecture and learning flow. The app here has been modified into **StuddyBuddy AI** with a custom UI, branding, and local chat experience.
+
+Original Repository : [https://github.com/awsccsheridan/streaming-chatbot]
 
 ## What It Does
 
