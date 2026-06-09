@@ -11,3 +11,4 @@ cdk.out
 backend/**/*.js
 backend/**/*.d.ts
 .DS_Store
+.vercel

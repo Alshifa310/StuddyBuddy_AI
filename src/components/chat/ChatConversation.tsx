@@ -206,7 +206,7 @@ export function ChatConversation({
         </div>
       </div>
 
-      <div className="shrink-0 border-t border-white/8 bg-black px-5 pb-3 pt-3 lg:px-7 lg:pb-4">
+      <div className="shrink-0 border-t border-white/10 bg-black px-5 pb-3 pt-3 lg:px-7 lg:pb-4">
         <div className="mb-3 flex flex-wrap gap-2">
           <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("Hello! What is this demo for?")}>What is this demo?</button>
           <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("How does the frontend-only version work?")}>Frontend-only version</button>
