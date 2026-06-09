@@ -60,7 +60,7 @@ export function MessageContent({
         a: ({ href, children }) => (
           <a
             href={href}
-            className="text-aws-orange underline underline-offset-2"
+            className="text-cyan-300 underline underline-offset-2"
             target="_blank"
             rel="noreferrer"
           >

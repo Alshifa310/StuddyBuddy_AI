@@ -1,173 +1,127 @@
-# Build Your First Streaming AI Personal Assistant
+# StuddyBuddy AI
 
-This is the starter repository for a beginner-friendly AWS workshop where students build a real-time AI personal assistant using:
+StuddyBuddy AI is a streaming AI study assistant built with Next.js on the frontend and AWS on the backend. It lets users ask questions, get streamed responses, and keep their conversation history in the browser.
 
-- Next.js frontend
+This repository was adapted from the AWS workshop starter project for a streaming AI personal assistant. Credit goes to the original workshop authors for the base architecture and learning flow. The app here has been modified into **StuddyBuddy AI** with a custom UI, branding, and local chat experience.
+
+## What It Does
+
+- Streams AI responses in real time.
+- Saves conversation history locally in the browser.
+- Lets you start new chats, switch between threads, and delete old chats.
+- Includes quick prompt buttons for common study questions.
+- Supports a responsive layout with a collapsible sidebar on mobile.
+- Is ready for frontend hosting on AWS Amplify.
+
+## Tech Stack
+
+- Next.js
+- React + TypeScript
 - AWS CDK
 - AWS Lambda Function URL
 - Lambda Response Streaming
 - Amazon Bedrock with Amazon Nova 2 Lite
-- AWS Amplify frontend deployment
+- AWS Amplify for frontend deployment
 
-## Repository Structure
+## Screenshots
+
+Homepage view:
+
+![StuddyBuddy AI homepage](public/screenshots/image.png)
+
+Sidebar view:
+
+![StuddyBuddy AI sidebar](public/screenshots/sidebar-open.png)
+
+Generating response view:
+![StuddyBuddy AI Generating message](public/screenshots/image-1.png)
+![StuddyBuddy AI Chat History](public/screenshots/image-2.png)
+
+Responsive view:
+![StuddyBuddy AI Responsiveness](public/screenshots/image-3.png)
+## Project Structure
 
 ```txt
-aws-ai-chatbot-workshop/
-├── src/                    # Next.js frontend code
-│   └── app/
-│       ├── page.tsx         # Chatbot UI + streaming reader
-│       ├── layout.tsx
-│       └── globals.css
+streaming-chatbot/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx
+│   │   ├── layout.tsx
+│   │   └── globals.css
+│   ├── components/
+│   │   └── chat/
+│   │       ├── ChatApp.tsx
+│   │       ├── ChatConversation.tsx
+│   │       └── ChatSidebar.tsx
+│   ├── hooks/
+│   │   └── useChatHistory.ts
+│   └── lib/
+│       └── chat-storage.ts
 ├── public/
-├── .env.example
-├── package.json             # Frontend dependencies
-├── tsconfig.json
-│
-└── backend/                 # AWS CDK backend project
-    ├── bin/
-    │   └── backend.ts       # CDK app entry point
-    ├── lib/
-    │   └── chatbot-stack.ts # Lambda + Bedrock + Function URL
-    ├── lambda/
-    │   └── index.ts         # Streaming Lambda handler
-    ├── cdk.json
-    ├── package.json
-    └── tsconfig.json
+│   └── screenshots/
+├── backend/
+│   ├── bin/
+│   ├── lib/
+│   └── lambda/
+└── README.md
 ```
 
-## Before You Start
+## Local Setup
 
-🛑 **CHECKPOINT 1: AWS Region**
-
-Make sure your AWS Console and CLI region are set to:
+Install dependencies:
 
 ```bash
-us-east-1
+npm install
 ```
 
-Nova 2 Lite access is expected in `us-east-1` for this workshop.
-
-## Backend Setup
-
-Go into the backend folder:
+Then install the backend dependencies:
 
 ```bash
 cd backend
 npm install
 ```
 
-Bootstrap CDK if this is your first time using CDK in the account:
-
-```bash
-npx cdk bootstrap
-```
-
-Deploy the backend:
-
-```bash
-npx cdk deploy
-```
-
-🛑 **CHECKPOINT 2: Copy the Lambda URL**
-
-After deployment, CDK prints an output called:
-
-```txt
-ChatbotApiUrl
-```
-
-Copy this URL. You will use it in the frontend as `NEXT_PUBLIC_LAMBDA_URL`.
-
-## Frontend Local Setup
-
-Go back to the root folder:
-
-```bash
-cd ..
-npm install
-```
-
-Create your local environment file:
+Set up your frontend environment file:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Paste your deployed Lambda Function URL:
+Add your Lambda Function URL to `.env.local`:
 
 ```env
 NEXT_PUBLIC_LAMBDA_URL=https://your-lambda-function-url.lambda-url.us-east-1.on.aws/
 ```
 
-Start the frontend locally:
+Run the app locally:
 
 ```bash
 npm run dev
 ```
 
-Open:
+Open the app in your browser:
 
 ```txt
 http://localhost:3000
 ```
 
-🛑 **CHECKPOINT 3: Test Streaming**
+## Backend Setup
 
-Ask the assistant:
-
-```txt
-Explain AWS Lambda like I am new to cloud.
-```
-
-You should see the response appear gradually in the browser.
-
-## Deploy Frontend With AWS Amplify
-
-1. Push this repo to GitHub.
-2. Open AWS Amplify.
-3. Create a new app from GitHub.
-4. Select the repo.
-5. Add this environment variable:
-
-```env
-NEXT_PUBLIC_LAMBDA_URL=your ChatbotApiUrl value
-```
-
-6. Deploy the app.
-
-🛑 **CHECKPOINT 4: Final Test**
-
-Open the Amplify public URL and test the chatbot again.
-
-## Common Issues
-
-### Bedrock access denied
-Make sure your AWS account has access to Amazon Bedrock and the Nova model in `us-east-1`.
-
-### Frontend says Lambda URL is missing
-Make sure `NEXT_PUBLIC_LAMBDA_URL` exists in `.env.local` locally or Amplify environment variables in production.
-
-### CORS error
-Make sure the deployed Lambda Function URL is the exact value from the CDK output.
-
-### CDK bootstrap error
-Run:
+The backend is deployed with AWS CDK. From the `backend` folder:
 
 ```bash
 npx cdk bootstrap
+npx cdk deploy
 ```
 
-Then deploy again.
+After deployment, copy the `ChatbotApiUrl` output and place it in `NEXT_PUBLIC_LAMBDA_URL` for the frontend.
 
-## Workshop Presenter Notes
+## Notes
 
-Recommended live flow:
+- If `NEXT_PUBLIC_LAMBDA_URL` is missing, the chat UI will show an error instead of calling the backend.
+- Bedrock access must be enabled for the AWS account and region you deploy to.
+- This project keeps chat history local to the browser, so clearing browser storage will remove old chats.
 
-1. Explain architecture.
-2. Deploy backend using CDK.
-3. Copy `ChatbotApiUrl`.
-4. Add it to frontend environment variables.
-5. Run frontend locally.
-6. Show streaming response.
-7. Deploy frontend through Amplify.
-8. Final public demo.
+## Credit
+
+Original workshop inspiration and starter structure came from the AWS workshop version of this project. This repository was modified from that base to create StuddyBuddy AI.

@@ -8,9 +8,12 @@ const config: Config = {
         aws: {
           navy: "#232F3E",
           orange: "#FF9900",
-          dark: "#111827"
-        }
-      }
+          dark: "#111827",
+        },
+      },
+      fontFamily: {
+        display: ["Sora", "sans-serif"],
+      },
     },
   },
   plugins: [],

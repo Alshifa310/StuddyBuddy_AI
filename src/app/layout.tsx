@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Streaming AI Personal Assistant",
-  description: "AWS Bedrock + Lambda Response Streaming + Next.js workshop project",
+  title: "StuddyBuddy AI",
+  description: "Local-first AI chat with persistent conversation history",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
