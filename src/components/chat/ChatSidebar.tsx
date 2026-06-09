@@ -48,8 +48,8 @@ export function ChatSidebar({
               <span className="text-lg">🤖</span>
             </div>
             <div>
-              <p className="text-sm font-semibold tracking-[0.18em] text-cyan-100 uppercase">StuddyBuddy AI</p>
-              <p className="text-xs text-slate-500">Your Personal Tutor</p>
+              <p className="text-sm font-semibold tracking-[0.18em] text-cyan-100 uppercase">Frontend Demo</p>
+              <p className="text-xs text-slate-500">Portfolio showcase</p>
             </div>
           </div>
 

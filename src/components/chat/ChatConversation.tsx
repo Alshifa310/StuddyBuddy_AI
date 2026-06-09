@@ -32,7 +32,15 @@ function MessageRow({ message, onCopy }: { message: ChatMessage; onCopy: (conten
       </div>
       <div className="min-w-0 flex-1">
         <div className="max-w-[88%] rounded-2xl rounded-tl-sm border border-white/10 bg-white/[0.04] px-5 py-4 text-sm leading-relaxed text-slate-200">
-          <MessageContent content={message.content} role="assistant" />
+          {message.content.trim() ? (
+            <MessageContent content={message.content} role="assistant" />
+          ) : (
+            <div className="flex items-center gap-1.5 py-1 text-slate-400" aria-label="Assistant typing">
+              <span className="h-2 w-2 animate-bounce rounded-full bg-cyan-300 [animation-delay:-0.2s]" />
+              <span className="h-2 w-2 animate-bounce rounded-full bg-cyan-300 [animation-delay:-0.1s]" />
+              <span className="h-2 w-2 animate-bounce rounded-full bg-cyan-300" />
+            </div>
+          )}
           <div className="mt-3 flex items-center justify-between border-t border-white/8 pt-3">
             <span className="text-[11px] text-slate-500">{message.time}</span>
             <button
@@ -80,26 +88,34 @@ export function ChatConversation({
   endRef: RefObject<HTMLDivElement>;
   onOpenSidebar: () => void;
 }) {
-  const [showHeader, setShowHeader] = useState<boolean>(() => {
-    if (typeof window === "undefined") return true;
-    try {
-      const raw = window.localStorage.getItem("showHeader");
-      return raw == null ? true : raw === "true";
-    } catch {
-      return true;
-    }
-  });
+  const [showHeader, setShowHeader] = useState(true);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem("showHeader");
+      if (raw != null) {
+        setShowHeader(raw === "true");
+      }
+    } catch {
+      /* ignore */
+    }
+
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+
     try {
       window.localStorage.setItem("showHeader", showHeader ? "true" : "false");
     } catch {
       /* ignore */
     }
-  }, [showHeader]);
+  }, [hydrated, showHeader]);
 
   return (
-    <section className="flex min-w-0 flex-1 flex-col bg-[#080910]">
+    <section className="flex min-h-0 min-w-0 flex-1 flex-col bg-[#080910]">
       {showHeader ? (
         <header className="relative shrink-0 bg-black  sm:px-6 sm:py-6 lg:px-0 border-b border-white/10">
           <div className="cursor-pointer p-1">
@@ -141,10 +157,10 @@ export function ChatConversation({
               <div>
                 <h1 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">Hi, there!</h1>
                 <p className="mt-1 bg-gradient-to-r from-cyan-200 via-fuchsia-300 to-violet-300 bg-clip-text text-lg font-medium text-transparent sm:text-2xl">
-                  How can I help you today?
+                  Explore the frontend demo experience.
                 </p>
                 <p className="mt-2 max-w-xl text-sm text-slate-400">
-                  Ask questions, learn concepts, and study with your AI tutor.
+                  Send messages, browse the UI, and review the local-only conversation flow.
                 </p>
               </div>
             </div>
@@ -174,7 +190,7 @@ export function ChatConversation({
       )}
 
 
-      <div className="messages-area flex-1 overflow-y-auto px-5 py-5 lg:px-7">
+      <div className="messages-area min-h-0 flex-1 overflow-y-auto px-5 py-5 lg:px-7">
         {isEmpty ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-white/10 text-slate-500">
             <div className="text-4xl">💬</div>
@@ -190,11 +206,11 @@ export function ChatConversation({
         </div>
       </div>
 
-      <div className="shrink-0  px-5 pb-5 pt-4 lg:px-7 bg-black">
+      <div className="shrink-0 border-t border-white/8 bg-black px-5 pb-3 pt-3 lg:px-7 lg:pb-4">
         <div className="mb-3 flex flex-wrap gap-2">
-          <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("Explain Python loops with simple examples")}>Explain Python loops</button>
-          <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("Help me study for my math exam")}>Study for math exam</button>
-          <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("Teach me AWS cloud basics step by step")}>AWS cloud basics</button>
+          <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("Hello! What is this demo for?")}>What is this demo?</button>
+          <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("How does the frontend-only version work?")}>Frontend-only version</button>
+          <button type="button" className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-300 transition hover:border-cyan-400/30 hover:bg-cyan-400/8 hover:text-cyan-100" onClick={() => onQuickPrompt("Thanks for the portfolio demo")}>Portfolio demo</button>
         </div>
 
         <form
@@ -215,7 +231,7 @@ export function ChatConversation({
                     onSubmit();
                   }
                 }}
-                placeholder="Message StuddyBuddy AI..."
+                placeholder="Message the portfolio demo..."
                 rows={1}
                 className="min-h-[40px] flex-1 resize-none bg-transparent px-1 py-1 text-sm text-slate-100 outline-none placeholder:text-slate-600"
               />
@@ -248,7 +264,7 @@ export function ChatConversation({
           </div>
         </form>
 
-        <p className="mt-2.5 text-center text-[11px] text-slate-600">
+        <p className="mt-2 text-center text-[10px] leading-4 text-slate-600 sm:text-[11px]">
           {thread?.messages.length ? "Chats are saved locally in this browser." : "Start a chat and your history will be saved locally."}
         </p>
       </div>
