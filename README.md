@@ -39,4 +39,4 @@ http://localhost:3000
 
 * Backend AI services are disabled in this branch.
 * No API keys or AWS setup required.
-* Created for portfolio and frontend showcase purposes.
+* Created for portfolio and frontend showcase purposes only.
